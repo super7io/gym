@@ -25,14 +25,26 @@ The "Math Review" section of Ward & Gundlach's (2016) book, implemented in Haske
 >
 > For $-1\lt$ $a\lt1$, these yield two infinite summations of geometric terms,
 >
-> $1+a+a^2+a^3+...=\sum^{\inf}_{j=0}a^j=\frac{a}{1-a}$ 
+> $1+a+a^2+a^3+...=\sum^{\inf}_{j=0}a^j=\frac{1}{1-a}$ 
 >
 > $a+a^2+a^3+a^4...=\sum^{\inf}_{j=1}a^j=\frac{a}{1-a}$ 
 
-These can be easily implemented in Haskell...
+These can be easily implemented in Haskell, for a given $a$ and $r$...
 
 ```haskell
--- 
+g1 :: (Floating a, Ord a) => a -> a -> a
+g1 a r
+ | a <= -1.0 = 0.0
+ | a >= 1.0 = 0.0
+ | otherwise = (1-(a**(r+1))) / (1-a)
+```
+
+```haskell
+g :: (Floating a, Ord a) => a -> a -> a
+g a r
+ | a <= -1.0 = 0.0
+ | a >= 1.0 = 0.0
+ | otherwise = (a-(a**(r+1))) / (1-a)
 ```
 
 ## Exponential function
