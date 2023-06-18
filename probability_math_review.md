@@ -47,6 +47,18 @@ g a r
  | otherwise = (a-(a**(r+1))) / (1-a)
 ```
 
+The infinte sums are even more straightforward.
+
+```haskell
+g1f :: (Floating a) => a -> a
+g1f a = 1 / (1-a)
+```
+
+```haskell
+gf :: (Floating a) => a -> a
+gf a = a / (1-a)
+```
+
 ## Exponential function
 
 > For any real-valued $x$, the power series definition of the exponential function evaluated at $x$ is
