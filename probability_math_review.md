@@ -29,7 +29,7 @@ The "Math Review" section of Ward & Gundlach's (2016) book, implemented in Haske
 >
 > $a+a^2+a^3+a^4...=\sum^{\inf}_{j=1}a^j=\frac{a}{1-a}$ 
 
-These can be easily implemented in Haskell, for a given $a$ and $r$...
+These can be easily implemented in Haskell, it requires floating point exponentiation (`**`). For a given $a$ and $r$:
 
 ```haskell
 g1 :: (Floating a, Ord a) => a -> a -> a
@@ -69,10 +69,32 @@ gf a = a / (1-a)
 >
 > $n! := (1)(2)...(n)$.
 
-Again, in Haskell...
+Defining the factorial function is a prerequisite:
 
 ```haskell
+factorial :: (Integral n) => n -> n
+factorial n = product [1..n]
 
+map factorial [1..6]
+-- [1,2,6,24,120,720]
+```
+
+And we need Euler's number (approximately):
+
+```haskell
+e = 2.71828
+```
+
+Then to evaluate $e$ to the $x$:
+
+```haskell
+exp x = product $ take x (repeat e)
+```
+
+But the power series is not this! We could get an arbitrarily accurate result using the series instead of our truncated value for e.
+
+```haskell
+-- tbc
 ```
 
 ## Sum of Integers, Sum of Squares
