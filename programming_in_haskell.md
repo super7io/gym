@@ -50,6 +50,50 @@ uqsort l
 -- [1,2,3,5,7,9]
 ```
 
+## Recursively merging two lists
+
+Using the [5 step process](https://doi.org/10.1093/comjnl/43.4.252) for defining functions:
+
+**Step 1:** A type is provided in the requirements.
+
+```haskell
+merge :: Ord a => [a] -> [a] -> [a]
+```
+
+**Step 2:** There are various cases due to multiple parameters.
+
+```haskell
+merge :: Ord a => [a] -> [a] -> [a]
+merge []     []     = ?
+merge (n:ns) []     = ?
+merge [] (m:ms)     = ?
+merge (n:ns) (m:ms) = ?
+```
+
+**Step 3:** Base cases are quite straight forward, as the arguments are pre-ordered.
+
+```haskell
+merge :: Ord a => [a] -> [a] -> [a]
+merge []     []     = []
+merge (n:ns) []     = (n:ns)
+merge [] (m:ms)     = (m:ms)
+merge (n:ns) (m:ms) = 
+```
+
+**Step 4:** Now for the trickier part, selecting the lowest $n$ or $m$ and recurring.
+
+```haskell
+merge :: Ord a => [a] -> [a] -> [a]
+merge []     []     = []
+merge (n:ns) []     = (n:ns)
+merge [] (m:ms)     = (m:ms)
+merge (n:ns) (m:ms) = if n > m
+                         then merge (ns ++ [m,n]) ms
+                         else merge ns ([m]++ms++[n])
+```
+
+**Step 5:** The class is already genearlised, and the cases can't be smoothed out any more, leave it there!
+
 ## Miscellanea
 
 All copyrightable content is released under the Creative Commons By licence (version 4.0) unless otherwise specified in the source code.

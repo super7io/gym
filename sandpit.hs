@@ -4,7 +4,16 @@
 -- SPDX-FileCopyrightNotice: 2023 Alexander Murphy <super7@alexmurphy.io>
 -- SPDX-License-Identifier: CC0-1.0
 --
--- A sandpit for building sandcastles, obviously.
+-- A sandpit. For building sandcastles, obviously.
+
+-- iteratively developing merge as it's tricky
+merge :: Ord a => [a] -> [a] -> [a]
+merge []     []     = []
+merge (n:ns) []     = (n:ns)
+merge [] (m:ms)     = (m:ms)
+merge (n:ns) (m:ms) = if n > m
+                         then merge (ns ++ [m,n]) ms
+                         else merge ns ([m]++ms++[n])
 
 -- pythagoreans
 pyths :: Int -> [(Int,Int,Int)]
