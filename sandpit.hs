@@ -1,3 +1,24 @@
+
+-- sandpit.hs
+--
+-- SPDX-FileCopyrightNotice: 2023 Alexander Murphy <super7@alexmurphy.io>
+-- SPDX-License-Identifier: CC0-1.0
+--
+-- A sandpit for building sandcastles, obviously.
+
+-- pythagoreans
+pyths :: Int -> [(Int,Int,Int)]
+pyths n = [(x,y,z) | x <- [1..n], y <- [1..n], z <- [1..n], x^2+y^2 == z^2]
+
+
+-- co-ordinate grid notes
+grid :: Int -> Int -> [(Int,Int)]
+grid a b = [(x,y) | x <- [0..a], y <- [0..b]]
+
+square :: Int -> [(Int,Int)]
+square n = [(x,y) | (x,y) <- grid n n, x /= y]
+
+
 -- quicksort implementation
 qsort :: Ord a => [a] -> [a]
 qsort []     = []
