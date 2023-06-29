@@ -87,12 +87,10 @@ merge :: Ord a => [a] -> [a] -> [a]
 merge []     []     = []
 merge (n:ns) []     = (n:ns)
 merge [] (m:ms)     = (m:ms)
-merge (n:ns) (m:ms) = if n > m
-                         then merge (ns ++ [m,n]) ms
-                         else merge ns ([m]++ms++[n])
+merge (n:ns) (m:ms) = if n <= m then n : merge ns (m:ms) else m : merge (n:ns) ms
 ```
 
-**Step 5:** The class is already genearlised, and the cases can't be smoothed out any more, leave it there!
+**Step 5:** The class is already generalise, and the cases are fine, leave it there!
 
 ## Miscellanea
 
