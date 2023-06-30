@@ -25,15 +25,14 @@ instance Show Op where
   show Mul = "*"
   show Div = "/"
 
-valid :: Op -> Int -> Int -> Bool
 -- unoptimized checks
-valid Add _ _ = True
-valid Mul _ _ = True
-valid Sub x y = x > y
-valid Div x y = x `mod` y == 0
+-- valid :: Op -> Int -> Int -> Bool
+-- valid Add _ _ = True
+-- valid Mul _ _ = True
+-- valid Sub x y = x > y
+-- valid Div x y = x `mod` y == 0
 
 valid' :: Op -> Int -> Int -> Bool
--- with algebraic checks
 valid' Add x y = x <= y
 valid' Mul x y = x /= 1 && y /= 1 && x <= y
 valid' Sub x y = x > y
@@ -61,8 +60,8 @@ values (App _ l r) = values l ++ values r
 eval :: Expr -> [Int]
 eval (Val n)     = [n | n > 0]
 eval (App o l r) = [apply o x y | x <- eval l,
-                                    y <- eval r,
-                                    valid' o x y]
+                                  y <- eval r,
+                                  valid' o x y]
 
 subs :: [a] -> [[a]]
 subs []     = [[]]
@@ -80,41 +79,39 @@ perms (x:xs) = concat (map (interleave x) (perms xs))
 choices :: [a] -> [[a]]
 choices = concat . map perms . subs
 
-solution :: Expr -> [Int] -> Int -> Bool
-solution e ns n =
-  elem (values e) (choices ns) && eval e == [n]
-
 split :: [a] -> [([a],[a])]
-split [] = []
-split [_] = []
+split []     = []
+split [_]    = []
 split (x:xs) = ([x],xs) : [(x:ls,rs) | (ls,rs) <- split xs]
 
-exprs :: [Int] -> [Expr]
-exprs [] = []
-exprs [n] = [Val n]
-exprs ns = [e | (ls,rs) <- split ns,
-                      l <- exprs ls,
-                      r <- exprs rs,
-                      e <- combine l r]
-
-combine :: Expr -> Expr -> [Expr]
-combine l r = [App o l r | o <- ops]
+-- exprs :: [Int] -> [Expr]
+-- exprs []  = []
+-- exprs [n] = [Val n]
+-- exprs ns  = [e | (ls,rs) <- split ns,
+--                  l       <- exprs ls,
+--                  r       <- exprs rs,
+--                  e       <- combine l r]
+--
+-- combine :: Expr -> Expr -> [Expr]
+-- combine l r = [App o l r | o <- ops]
+--
+--
+-- unoptimized original
+-- solutions :: [Int] -> Int -> [Expr]
+-- solutions ns n = [e | ns' <- choices ns, e <- exprs ns', eval e == [n]]
 
 ops :: [Op]
 ops = [Add,Sub,Mul,Div]
 
-solutions :: [Int] -> Int -> [Expr]
-solutions ns n = [e | ns' <- choices ns, e <- exprs ns', eval e == [n]]
-
 type Result = (Expr,Int)
 
 results :: [Int] -> [Result]
-results [] = []
+results []  = []
 results [n] = [(Val n,n) | n > 0]
-results ns = [res | (ls,rs) <- split ns,
-                    lx      <- results ls,
-                    ry      <- results rs,
-                    res     <- combine' lx ry]
+results ns  = [res | (ls,rs) <- split ns,
+                     lx      <- results ls,
+                     ry      <- results rs,
+                     res     <- combine' lx ry]
 
 combine' :: Result -> Result -> [Result]
 combine' (l,x) (r,y) = [(App o l r, apply o x y) | o <- ops, valid' o x y]
