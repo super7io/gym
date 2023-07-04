@@ -6,6 +6,12 @@
 --
 -- A sandpit. For building sandcastles, obviously.
 
+-- Function that checks whether a number is prime
+checkPrime :: Int -> Bool
+checkPrime n = (length [x | x <- [2..n], n `mod` x == 0]) == 1
+
+checkPrimeTest = zip (map checkPrime [1..30]) [1..30]
+
 -- iteratively developing merge as it's tricky
 merge :: Ord a => [a] -> [a] -> [a]
 merge []     []     = []
